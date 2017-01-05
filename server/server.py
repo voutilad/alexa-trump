@@ -56,10 +56,11 @@ def oauth_callback():
     token = resp['oauth_token_secret']
     token_type = 'token'
     print('DEBUG [resp=' + str(resp) + ']')
-    
+
     if resp:
-        next_url = request.args.get('next') + '?state=' + session['state'] + \
+        next_url = request.args.get('next') + '&state=' + session['state'] + \
             '&access_token=' + token + '&token_type=' + token_type
+        print('DEBUG [next_url=' + str(next_url) + ']')
         return redirect(next_url)
     else:
         return 'Failed to authorize :-('
