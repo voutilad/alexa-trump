@@ -35,11 +35,11 @@ def authorize():
     redirect_uri = request.args.get('redirect_uri')
 
     if state and client_id:
-        if client_id == 'alexa_trump':
+        if client_id == 'alexa-trump':
             callback_url = url_for('oath_callback', next=redirect_uri)
             return twitter.authorize(callback=callback_url)
         else:
-            return 'bad client_id'
+            return 'bad client_id: ' + client_id
 
     return '<html><body>Hey, man. Are you using Alexa or not?</body></html>'
 
