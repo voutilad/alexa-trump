@@ -34,12 +34,12 @@ def authorize():
     # online Alexa skill config...not sure why
     redirect_uri = request.args.get('redirect_uri')
 
+    print('DEBUG [state=' + str(state) + ']')
+    print('DEBUG [client_id=' + str(client_id) + ']')
+    print('DEBUG [redirect_uri=' + str(redirect_uri) + ']')
+
     if state and client_id:
         session['state'] = state
-        if app.debug:
-            print('DEBUG [state=' + str(state) + ']')
-            print('DEBUG [client_id=' + str(client_id) + ']')
-            print('DEBUG [redirect_uri=' + str(redirect_uri) + ']')
 
         if client_id == 'alexa-trump':
             callback_url = url_for('oauth_callback', next=redirect_uri)
@@ -55,7 +55,8 @@ def oauth_callback():
     resp = twitter.authorized_response()
     token = resp['oauth_token_secret']
     token_type = 'token'
-
+    print('DEBUG [resp=' + str(resp) + ']')
+    
     if resp:
         next_url = request.args.get('next') + '?state=' + session['state'] + \
             '&access_token=' + token + '&token_type=' + token_type
