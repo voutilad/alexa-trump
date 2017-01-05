@@ -40,8 +40,8 @@ def build_speechlet_response(output, card_title='Random Trump Tweets',
             },
             'card': {
                 'type': 'Simple',
-                'title': "SessionSpeechlet - Random Trump Tweets",
-                'content': "SessionSpeechlet - " + output
+                'title': card_title,
+                'content': output
             },
             'reprompt': {
                 'outputSpeech': {
@@ -53,20 +53,6 @@ def build_speechlet_response(output, card_title='Random Trump Tweets',
         }
     }
 
-
-def get_welcome_response():
-    """ If we wanted to initialize the session to have some attributes we could
-    add those here
-    """
-    speech_output = "Welcome to Random Trump Tweets!"
-    reprompt_text = "You can get a new tweet by saying read me a random " \
-                    "Trump tweet."
-
-    should_end_session = False
-    return build_speechlet_response(
-        speech_output, reprompt_text, should_end_session)
-
-
 def handle_session_end_request():
     """
     Thank the user and exit the skill.
@@ -77,11 +63,25 @@ def handle_session_end_request():
     return build_response({}, build_speechlet_response(
         card_title, speech_output, None, should_end_session))
 
+
 def on_session_started(session_started_request, session):
     """ Called when the session starts """
 
     print("on_session_started requestId=" + session_started_request['requestId']
           + ", sessionId=" + session['sessionId'])
+
+def build_tweet_response(session, prephase=None):
+    """
+    Build the response text for a Donald Trump tweet
+    """
+    if prephase is None:
+        prephase = ''
+
+    tweet = prephase + 'On Twitter, Donald Trump said: ' + \
+            get_random_tweet(session)
+    return build_speechlet_response(output=tweet,
+                                    card_title='Random Trump Tweets',
+                                    should_end_session=True)
 
 
 def on_launch(launch_request, session):
@@ -91,8 +91,9 @@ def on_launch(launch_request, session):
 
     print("on_launch requestId=" + launch_request['requestId'] +
           ", sessionId=" + session['sessionId'])
-    # Dispatch to your skill's launch
-    return get_welcome_response()
+    # right now we have one default intent, so whatever, man...
+    return build_tweet_response(session,
+                                prephase='Let me get a tweet for you...')
 
 def on_intent(intent_request, session):
     """ Called when the user specifies an intent for this skill """
@@ -101,10 +102,7 @@ def on_intent(intent_request, session):
           ", sessionId=" + session['sessionId'])
 
     # right now we have one default intent, so whatever, man...
-    tweet = get_random_tweet(session)
-    return build_speechlet_response(output=tweet,
-                                    card_title='Random Trump Tweets',
-                                    should_end_session=True)
+    return build_tweet_response(session)
 
 
 def on_session_ended(session_ended_request, session):
