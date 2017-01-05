@@ -25,8 +25,9 @@ def get_random_tweet(session):
     tweet = timeline[random.randint(0, len(timeline))]
     return tweet.text
 
-def build_speechlet_response(output, card_title='Random Trump Tweets',
-                             reprompt_text='', should_end_session=True):
+def build_speechlet_response(output, card_title='Donald Trump said...',
+                             reprompt_text='', card_type='Simple',
+                             should_end_session=True):
     """
     Build the JSON speechlet response.
     """
@@ -39,7 +40,7 @@ def build_speechlet_response(output, card_title='Random Trump Tweets',
                 'text': output
             },
             'card': {
-                'type': 'Simple',
+                'type': card_type,
                 'title': card_title,
                 'content': output
             },
@@ -119,6 +120,13 @@ def lambda_handler(event, context):
     ### Boilerplate from Amazon Lambda example
     print("event.session.application.applicationId=" +
           event['session']['application']['applicationId'])
+
+    # Check if account is linked.
+    if not event['session']['user'].has_key('accessToken'):
+        return build_speechlet_response(
+            "Please first link this skill to Twitter using the Alexa app.",
+            card_type='LinkAccount', card_title='Link your Twitter account')
+
 
     if event['session']['new']:
         on_session_started({'requestId': event['request']['requestId']},

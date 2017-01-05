@@ -34,9 +34,9 @@ def authorize():
     # online Alexa skill config...not sure why
     redirect_uri = request.args.get('redirect_uri')
 
-    print('DEBUG [state=' + str(state) + ']')
-    print('DEBUG [client_id=' + str(client_id) + ']')
-    print('DEBUG [redirect_uri=' + str(redirect_uri) + ']')
+    #print('DEBUG [state=' + str(state) + ']')
+    #print('DEBUG [client_id=' + str(client_id) + ']')
+    #print('DEBUG [redirect_uri=' + str(redirect_uri) + ']')
 
     if state and client_id:
         session['state'] = state
@@ -55,7 +55,7 @@ def oauth_callback():
     resp = twitter.authorized_response()
     token = str(resp['oauth_token']) + ',' + str(resp['oauth_token_secret'])
     token_type = 'Bearer'
-    print('DEBUG [resp=' + str(resp) + ']')
+    #print('DEBUG [resp=' + str(resp) + ']')
 
     if resp:
         # JFC...we need a HASH before our attributes
