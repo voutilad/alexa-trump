@@ -18,9 +18,21 @@ twitter = oauth.remote_app(
 
 @app.route('/authorize')
 def authorize():
-    return twitter.authorize(
-        callback=url_for('oauth_authorized',
-        next=request.args.get('next') or request.referrer or None))
+    """
+    The Alexa app should call this, passing in 'state', 'client_id',
+    'response_type', 'scope', and a 'redirect_uri'. We need 'state' and the
+    generated oauth code. We don't use 'scope' at the moment.
+    """
+    state = request.args.get('state')
+    client_id = request.args.get('client_id')
+    redirect_uri = request.args.get('redirect_uri')
+
+    if state and client_id:
+        return twitter.authorize(
+            callback=url_for('oauth_authorized', next=redirect_uri))
+    else:
+        return '<html><body>Hey, man. Are you using Alexa or not?</body></html>'
+
 
 @app.route('/oauth-authorized')
 def oauth_authorized():
@@ -32,4 +44,5 @@ def oauth_authorized():
 
 if __name__ == "__main__":
     app.secret_key = os.environ['FLASK_SECRET_KEY']
+    #app.debug = True
     app.run()
