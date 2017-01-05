@@ -1,4 +1,4 @@
-![The Donald][./Trump 108x108.png]
+![The Donald](./Trump 108x108.png)
 # Trump's Twitter
 Alexa skill for hearing random Trump tweets!
 
@@ -8,7 +8,7 @@ Ask Alexa:
 
 Etc.
 
-**Sample Audio**: [Alexa and Trump Sample.m4a](./Alexa and Trump Sample.m4a)
+**Sample Audio**: ![Alexa and Trump Sample.m4a](./Alexa and Trump Sample.m4a)
 
 ## Lambda
 This is the core skill logic to put in Amazon Lambda based on some boilerplate
