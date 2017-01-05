@@ -8,7 +8,7 @@ Ask Alexa:
 
 Etc.
 
-**Sample**: ![alt sample audio][Alexa and Trump Sample.m4a]
+**Sample Audio**: [Alexa and Trump Sample.m4a](Alexa and Trump Sample.m4a)
 
 ## Lambda
 This is the core skill logic to put in Amazon Lambda based on some boilerplate
@@ -28,6 +28,6 @@ location...but using Lambda & Heroku keeps it dirt cheap $$$.
 The included source code is copyright Dave Voutila, 2017 and licensed under
 the GPL v3.0. See LICENSE file for more details.
 
-The Trump images are from: (https://www.flickr.com/photos/22007612@N05/29273256122)
+The Trump images are from: [Gage Skidmore](https://www.flickr.com/photos/22007612@N05/29273256122)
 Attributed to: Gage Skidmore from Peoria, AZ, United States of America
 And under CC BY-SA 2.0
