@@ -53,7 +53,7 @@ def authorize():
 @app.route('/callback')
 def oauth_callback():
     resp = twitter.authorized_response()
-    token = resp['oauth_token']
+    token = resp['oauth_token_secret']
     token_type = 'token'
 
     if resp:
