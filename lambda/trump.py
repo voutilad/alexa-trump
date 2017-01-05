@@ -100,8 +100,11 @@ def on_intent(intent_request, session):
     print("on_intent requestId=" + intent_request['requestId'] +
           ", sessionId=" + session['sessionId'])
 
-    
-    return get_welcome_response()
+    # right now we have one default intent, so whatever, man...
+    tweet = get_random_tweet(session)
+    return build_speechlet_response(output=tweet,
+                                    card_title='Random Trump Tweets',
+                                    should_end_session=True)
 
 
 def on_session_ended(session_ended_request, session):
