@@ -1,6 +1,8 @@
 # alexa-trump
 Alexa skill for hearing random Trump tweets
 
+Trump icon pic from https://en.wikipedia.org/wiki/Donald_Trump#/media/File:Donald_Trump_August_19,_2015_(cropped).jpg
+
 ## Lambda
 This is the core skill logic to put in Amazon Lambda
 
