@@ -36,7 +36,7 @@ def authorize():
 
     if state and client_id:
         if client_id == 'alexa-trump':
-            callback_url = url_for('ouath_callback', next=redirect_uri)
+            callback_url = url_for('oauth_callback', next=redirect_uri)
             return twitter.authorize(callback=callback_url)
         else:
             return 'bad client_id: ' + client_id
