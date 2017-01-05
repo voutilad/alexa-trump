@@ -8,7 +8,7 @@ Ask Alexa:
 
 Etc.
 
-**Sample Audio**: ![Alexa and Trump Sample.m4a](./Alexa and Trump Sample.m4a)
+**Sample Audio**: ![Alexa.mp3](./Alexa.mp3)
 
 ## Lambda
 This is the core skill logic to put in Amazon Lambda based on some boilerplate
