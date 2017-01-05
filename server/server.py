@@ -1,6 +1,6 @@
 from __future__ import print_function
 import os
-from flask import Flask, url_for, request
+from flask import Flask, url_for, request, redirect, session
 from flask_oauthlib.client import OAuth
 from flask_oauthlib.contrib.apps import twitter
 
@@ -35,6 +35,12 @@ def authorize():
     redirect_uri = request.args.get('redirect_uri')
 
     if state and client_id:
+        session['state'] = state
+        if app.debug:
+            print('DEBUG [state=' + str(state) + ']')
+            print('DEBUG [client_id=' + str(client_id) + ']')
+            print('DEBUG [redirect_uri=' + str(redirect_uri) + ']')
+
         if client_id == 'alexa-trump':
             callback_url = url_for('oauth_callback', next=redirect_uri)
             return twitter.authorize(callback=callback_url)
@@ -47,10 +53,15 @@ def authorize():
 @app.route('/callback')
 def oauth_callback():
     resp = twitter.authorized_response()
-    if resp is None:
-        return 'None'
+    token = resp['oauth_token']
+    token_type = 'token'
+
+    if resp:
+        next_url = request.args.get('next') + '?state=' + session['state'] + \
+            '&access_token=' + token + '&token_type=' + token_type
+        return redirect(next_url)
     else:
-        return str(resp)
+        return 'Failed to authorize :-('
 
 if __name__ == "__main__":
     app.debug = True
