@@ -58,7 +58,8 @@ def oauth_callback():
     print('DEBUG [resp=' + str(resp) + ']')
 
     if resp:
-        next_url = request.args.get('next') + '&state=' + session['state'] + \
+        # JFC...we need a HASH before our attributes
+        next_url = request.args.get('next') + '#state=' + session['state'] + \
             '&access_token=' + str(token) + '&token_type=' + str(token_type)
         print('DEBUG [next_url=' + str(next_url) + ']')
         return redirect(next_url)
