@@ -5,6 +5,7 @@ from flask_oauthlib.client import OAuth
 from flask_oauthlib.contrib.apps import twitter
 
 app = Flask(__name__)
+app.secret_key = os.environ['FLASK_SECRET_KEY']
 oauth = OAuth(app)
 twitter = oauth.remote_app(
     'twitter',
@@ -43,6 +44,5 @@ def oauth_authorized():
         return str(resp)
 
 if __name__ == "__main__":
-    app.secret_key = os.environ['FLASK_SECRET_KEY']
-    #app.debug = True
-    app.run()
+    app.debug = True
+    app.run(host='0.0.0.0')
