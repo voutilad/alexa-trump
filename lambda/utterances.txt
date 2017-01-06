@@ -1,0 +1,6 @@
+GetRandomTrumpTweet for a random tweet
+GetRandomTrumpTweet for a tweet
+GetRandomTrumpTweet to read a tweet
+GetRandomTrumpTweet account for a random tweet
+GetRandomTrumpTweet account for a tweet
+GetRandomTrumpTweet account to read a tweet
