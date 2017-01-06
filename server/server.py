@@ -1,3 +1,6 @@
+"""
+Flask OAuth Server for proxying Amazon Alexa to Twitter.
+"""
 from __future__ import print_function
 import os
 from flask import Flask, url_for, request, redirect, session

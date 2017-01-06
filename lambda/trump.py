@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+"""
+Amazon Lambda code for the _Trump's Twitter_ Alexa skill.
+"""
 from __future__ import print_function
 import os
 import random
