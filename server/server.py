@@ -17,6 +17,13 @@ twitter = oauth.remote_app(
     authorize_url='https://api.twitter.com/oauth/authorize'
 )
 
+def log(message):
+    """
+    Print to the console/log if in Debug mode.
+    """
+    if os.environ.has_key('FLASK_DEBUG') or app.debug:
+        print('DEBUG: [' + str(message) + ']')
+
 @app.route('/authorize')
 def authorize():
     """
@@ -34,9 +41,9 @@ def authorize():
     # online Alexa skill config...not sure why
     redirect_uri = request.args.get('redirect_uri')
 
-    #print('DEBUG [state=' + str(state) + ']')
-    #print('DEBUG [client_id=' + str(client_id) + ']')
-    #print('DEBUG [redirect_uri=' + str(redirect_uri) + ']')
+    log('state=' + str(state) + '')
+    log('client_id=' + str(client_id))
+    log('redirect_uri=' + str(redirect_uri))
 
     if state and client_id:
         session['state'] = state
@@ -45,8 +52,10 @@ def authorize():
             callback_url = url_for('oauth_callback', next=redirect_uri)
             return twitter.authorize(callback=callback_url)
         else:
+            log('bad client_id')
             return 'bad client_id: ' + client_id
 
+    log('Did not find both a valid state and client_id.')
     return '<html><body>Hey, man. Are you using Alexa or not?</body></html>'
 
 
@@ -55,15 +64,15 @@ def oauth_callback():
     resp = twitter.authorized_response()
     token = str(resp['oauth_token']) + ',' + str(resp['oauth_token_secret'])
     token_type = 'Bearer'
-    #print('DEBUG [resp=' + str(resp) + ']')
 
     if resp:
-        # JFC...we need a HASH before our attributes
+        # JFC...we need a HASH before our attributes! THANKS AMAZON.
         next_url = request.args.get('next') + '#state=' + session['state'] + \
             '&access_token=' + str(token) + '&token_type=' + str(token_type)
-        print('DEBUG [next_url=' + str(next_url) + ']')
+        log('next_url=' + str(next_url))
         return redirect(next_url)
     else:
+        print('!!! failed to authorize !!!')
         return 'Failed to authorize :-('
 
 if __name__ == "__main__":
