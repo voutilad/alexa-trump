@@ -26,15 +26,22 @@ on this...but if you skim them and use common sense to fill in blanks you'll
 be caught in this trap.)
 
 Example given `redirect_url`:
-  `https://pitangui.amazon.com/spa/skill/account-linking-status.html?vendorId=AAAAAAAAAAAAAA`
+```
+https://pitangui.amazon.com/spa/skill/account-linking-status.html?vendorId=AAAAAAAAAAAAAA
+```
 
 You need to pass the previously given *state*, the new *token*, and a
 *token_type* as part of this redirect url. Obvious first thought would be
 something like:
- `https://pitangui.amazon.com/spa/skill/account-linking-status.html?vendorId=AAAAAAAAAAAAA&state=my_state&token=my_token&token_type=Bearer`
 
-_BUT NOOOOOOO..._ You need to use a [# (url fragment identifier)](https://en.wikipedia.org/wiki/Fragment_identifier) instead of just
-adding more query parameters. `(╯°□°)╯︵ ┻━┻`
+```
+https://pitangui.amazon.com/spa/skill/account-linking-status.html?vendorId=AAAAAAAAAAAAA&state=my_state&token=my_token&token_type=Bearer
+```
+
+_BUT NOOOOOOO..._ You need to use a [# (i.e. a url fragment identifier)](https://en.wikipedia.org/wiki/Fragment_identifier) instead of
+adding more query parameters.
+
+`(╯°□°)╯︵ ┻━┻`
 
 ### Twitter Token Gotcha
 So Amazon wants you to return a single token value for implicit authorization
