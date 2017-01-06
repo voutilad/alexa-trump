@@ -54,7 +54,6 @@ deserialize it in your Alexa skill code__.
 ## Helpful Libraries Used
 * [Flask](http://flask.pocoo.org)
 * [Flask-OAuthlib](https://flask-oauthlib.readthedocs.io)
-* [python-twitter](https://python-twitter.readthedocs.io/en/latest/)
 * [gunicorn](http://gunicorn.org)
 
 ## Deploying to Heroku
