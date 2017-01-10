@@ -10,7 +10,7 @@ import twitter
 TWITTER_CONSUMER_KEY=os.environ['TWITTER_CONSUMER_KEY']
 TWITTER_CONSUMER_SECRET=os.environ['TWITTER_CONSUMER_SECRET']
 
-def get_random_tweet(session):
+def get_random_tweet(session, screen_name='realDonaldTrump'):
     """
     Grab token from session and get a tweet!
     """
@@ -20,7 +20,7 @@ def get_random_tweet(session):
                       consumer_secret=TWITTER_CONSUMER_SECRET,
                       access_token_key=key, access_token_secret=secret)
 
-    timeline = api.GetUserTimeline(screen_name='realDonaldTrump',
+    timeline = api.GetUserTimeline(screen_name=screen_name,
                                    include_rts=False,
                                    trim_user=True,
                                    exclude_replies=True,
