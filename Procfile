@@ -1,1 +1,1 @@
-web: gunicorn server.server:app
+web: gunicorn dear_leader.wsgi

@@ -8,11 +8,11 @@
 
 # clear out existing package
 mkdir -p build
-rm build/Trump.zip
+rm build/Lambda.zip
 
 # package out python module and any dependencies installed in the virtual env
 PWD = $(pwd)
-zip -r9 ./build/Trump.zip trump.py
+zip -r9 ./build/Lambda.zip *.py
 cd $VIRTUAL_ENV/lib/python2.7/site-packages
-zip -r9 ~/src/alexa/alexa-trump/lambda/build/Trump.zip .
+zip -r9 $PWD/build/Lambda.zip .
 cd $PWD

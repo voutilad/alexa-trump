@@ -3,3 +3,4 @@ flask_oauthlib>=0.9.3
 python-twitter>=3.2
 gunicorn>=19.6.0
 pytest>=3.0.5
+python-dotenv>=0.6.1

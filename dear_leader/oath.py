@@ -1,16 +1,11 @@
-"""
-Flask OAuth Server for proxying Amazon Alexa to Twitter.
-"""
 from __future__ import print_function
+import logging
 import os
-from flask import Flask, url_for, request, redirect, session
+from flask import Blueprint, url_for, request, redirect, session, abort
 from flask_oauthlib.client import OAuth
-from flask_oauthlib.contrib.apps import twitter
+from dear_leader.settings import CLIENT_ID
 
-app = Flask(__name__)
-app.secret_key = os.environ['FLASK_SECRET_KEY']
-oauth = OAuth(app)
-twitter = oauth.remote_app(
+TWITTER = OAuth().remote_app(
     'twitter',
     consumer_key=os.environ['TWITTER_CONSUMER_KEY'],
     consumer_secret=os.environ['TWITTER_CONSUMER_SECRET'],
@@ -19,15 +14,11 @@ twitter = oauth.remote_app(
     access_token_url='https://api.twitter.com/oauth/access_token',
     authorize_url='https://api.twitter.com/oauth/authorize'
 )
+oauth_api = Blueprint('oath_api', __name__)
+logger = logging.getLogger(oauth_api.name)
 
-def log(message):
-    """
-    Print to the console/log if in Debug mode.
-    """
-    if os.environ.has_key('FLASK_DEBUG') or app.debug:
-        print('DEBUG: [' + str(message) + ']')
 
-@app.route('/authorize')
+@oauth_api.route('/authorize')
 def authorize():
     """
     The Alexa app should call this, passing in 'state', 'client_id',
@@ -44,27 +35,27 @@ def authorize():
     # online Alexa skill config...not sure why
     redirect_uri = request.args.get('redirect_uri')
 
-    log('state=' + str(state) + '')
-    log('client_id=' + str(client_id))
-    log('redirect_uri=' + str(redirect_uri))
+    logger.debug('state=' + str(state) + '')
+    logger.debug('client_id=' + str(client_id))
+    logger.debug('redirect_uri=' + str(redirect_uri))
 
     if state and client_id:
         session['state'] = state
 
-        if client_id == 'alexa-trump':
-            callback_url = url_for('oauth_callback', next=redirect_uri)
-            return twitter.authorize(callback=callback_url)
+        if client_id == CLIENT_ID:
+            callback_url = url_for('oath_api.oauth_callback', next=redirect_uri)
+            return TWITTER.authorize(callback=callback_url)
         else:
-            log('bad client_id')
-            return 'bad client_id: ' + client_id
+            logger.info('bad client_id')
+            abort(403)
 
-    log('Did not find both a valid state and client_id.')
+        logger.info('Did not find both a valid state and client_id.')
     return '<html><body>Hey, man. Are you using Alexa or not?</body></html>'
 
 
-@app.route('/callback')
+@oauth_api.route('/callback')
 def oauth_callback():
-    resp = twitter.authorized_response()
+    resp = TWITTER.authorized_response()
     token = str(resp['oauth_token']) + ',' + str(resp['oauth_token_secret'])
     token_type = 'Bearer'
 
@@ -72,12 +63,8 @@ def oauth_callback():
         # JFC...we need a HASH before our attributes! THANKS AMAZON.
         next_url = request.args.get('next') + '#state=' + session['state'] + \
             '&access_token=' + str(token) + '&token_type=' + str(token_type)
-        log('next_url=' + str(next_url))
+        logger.debug('next_url=' + str(next_url))
         return redirect(next_url)
     else:
-        print('!!! failed to authorize !!!')
+        logger.info('Failed ot authorize')
         return 'Failed to authorize :-('
-
-if __name__ == "__main__":
-    app.debug = True
-    app.run(host='0.0.0.0')
