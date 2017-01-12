@@ -1,6 +1,7 @@
 """
 Test the interaction and statefulness
 """
+import os
 from dear_leader.server import create_app
 from dear_leader.settings import CLIENT_ID
 
@@ -37,3 +38,12 @@ def test_redirect_to_twitter_oauth():
     assert response is not None
     assert response.status_code == 302
     assert 'https://api.twitter.com/oauth/authorize' in response.location
+
+
+def test_json_response_from_alexa():
+    data = open(os.path.join(os.path.dirname(__file__), 'fixtures/launch-intent.json'), 'r').read()
+    response = client.post('/ask/', data=data)
+
+    assert response is not None
+    assert response.status_code == 200
+    assert b'hey man' in response.data

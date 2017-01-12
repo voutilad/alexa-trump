@@ -6,7 +6,7 @@ import os
 from flask import Flask
 from dear_leader.default_web import web_api
 from dear_leader.oath import oauth_api
-from dear_leader.ask import ask_api
+from dear_leader.alexa import ask_api
 
 
 def create_app(config_filename=None):

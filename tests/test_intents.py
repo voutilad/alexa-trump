@@ -1,13 +1,13 @@
 """
 Tests for Alexa Intents using Flask-Ask
 """
-from dear_leader import ask
+from dear_leader import alexa
 
 def test_welcome():
     """
     Are we prompted to setup our skill on first welcome?
     """
-    question = ask.welcome()
-    assert question is not None
-    assert question
+    statement = alexa.welcome()
+    assert "hey man" in statement._response['outputSpeech']['text']
+
 
