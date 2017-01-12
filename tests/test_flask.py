@@ -1,11 +1,12 @@
 """
 Test the interaction and statefulness
 """
-from dear_leader import server
+from dear_leader.server import create_app
 from dear_leader.settings import CLIENT_ID
 
-server.app.config['TESTING'] = True
-client = server.app.test_client()
+app = create_app()
+app.config['TESTING'] = True
+client = app.test_client()
 
 
 def test_if_get_to_index_redirects_to_github():

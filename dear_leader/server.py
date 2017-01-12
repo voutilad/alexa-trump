@@ -3,22 +3,28 @@ Flask OAuth Server for proxying Amazon Alexa to Twitter.
 """
 from __future__ import print_function
 import os
-from flask import Flask, redirect
-from flask_ask import Ask, statement, question, session
+from flask import Flask
+from dear_leader.default_web import web_api
 from dear_leader.oath import oauth_api
-
-app = Flask(__name__)
-app.secret_key = os.environ['FLASK_SECRET_KEY']
-app.register_blueprint(oauth_api, url_prefix='/oauth')
+from dear_leader.ask import ask_api
 
 
-@app.route('/')
-def home():
+def create_app(config_filename=None):
     """
-    Redirect to our project page for now.
-    :return: redirect to github
+    Application factory function
+    :param config_filename: filename of a python file with the configs
+    :return: new Flask application instance
     """
-    return redirect('https://github.com/voutilad/alexa-trump')
+    app = Flask(__name__)
+    if config_filename:
+        app.config.from_pyfile(config_filename)
+    else:
+        app.secret_key = os.environ['FLASK_SECRET_KEY']
+
+    app.register_blueprint(oauth_api, url_prefix='/oauth')
+    app.register_blueprint(ask_api, url_prefix='/ask')
+    app.register_blueprint(web_api, url_prefix='/')
+    return app
 
 
 if __name__ == "__main__":
@@ -26,5 +32,6 @@ if __name__ == "__main__":
     import sys
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
+    app = create_app()
     app.debug = True
     app.run(host='0.0.0.0')
